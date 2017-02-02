@@ -35,4 +35,4 @@
 ```
 当然在下拉刷新数据的时候应该移除字典中所有缓存的cell高度  
 //移除字典中缓存的cell高度  
-[self.cellHeightDicM removeAllObjects];  
+`[self.cellHeightDicM removeAllObjects];`    
