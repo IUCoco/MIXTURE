@@ -36,4 +36,8 @@
 当然在下拉刷新数据的时候应该移除字典中所有缓存的cell高度  
 //移除字典中缓存的cell高度  
 `[self.cellHeightDicM removeAllObjects];`  
-@2 在模型中存储cell的高度
+@2 在模型中存储cell的高度  
+@3前面说过--->当前有多少条数据调用多少次+屏幕有多少条数据调用多少次因为开始要精确算出滚动条的大小，如果使用估算  
+`- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath`或者
+`@property (nonatomic) CGFloat estimatedRowHeight`属性  
+`- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath`还可以再次优化  
