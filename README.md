@@ -68,4 +68,33 @@
 }
 
 ```
+//沙盒会先查看内存再查看沙盒  
+```
+- (nullable UIImage *)imageFromDiskCacheForKey:(nullable NSString *)key {
+    UIImage *diskImage = [self diskImageForKey:key];
+    if (diskImage && self.config.shouldCacheImagesInMemory) {
+        NSUInteger cost = SDCacheCostForImage(diskImage);
+        [self.memCache setObject:diskImage forKey:key cost:cost];
+    }
 
+    return diskImage;
+}
+```
+```
+//根据网络状况加载不同质量的图片
+    AFNetworkReachabilityManager *manager = [AFNetworkReachabilityManager sharedManager];
+    //查看沙盒里面是否有原始高质量图片
+    //SDWebImage----->一个URL（key）对应一个图片
+    UIImage *originalImage = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:topic.image1];//沙盒会先查看内存再查看沙盒
+    if (originalImage) {//以前已经下载过了
+        self.imageView.image = originalImage;
+    }else{//以前没有下载过
+        //根据网络情况判断下载哪种质量图片
+        if (manager.isReachableViaWWAN) {//移动蜂窝网络
+          [self.imageView sd_setImageWithURL:[NSURL URLWithString:topic.image2]];
+        }else if (manager.isReachableViaWiFi){//WiFi
+          [self.imageView sd_setImageWithURL:[NSURL URLWithString:topic.image1]];
+        }
+    }
+
+```
