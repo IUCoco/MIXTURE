@@ -41,3 +41,31 @@
 `- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath`或者
 `@property (nonatomic) CGFloat estimatedRowHeight`属性  
 `- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath`还可以再次优化  
+
+
+### AFN网络监控  
+一般在`- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions`代理方法里面添加网络监控，manager只会创建一次，这样性能也会好些。  
+```
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    // Override point for customization after application launch.
+    //1.创建窗口
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    //2.设置窗口根控制器
+//    CZQTabBarController *winRootVC = [[CZQTabBarController alloc] init];
+//    self.window.rootViewController = winRootVC;
+    //2.设置窗口的根控制器为广告控制器
+    CZQADViewController *adVC = [[CZQADViewController alloc] init];
+    //init底层调用 initWithNib
+    self.window.rootViewController = adVC;
+    //3.设置为application的主窗口并且显示
+    [self.window makeKeyAndVisible];
+    
+    //监控网络状态
+    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
+    
+    return YES;
+}
+
+```
+
